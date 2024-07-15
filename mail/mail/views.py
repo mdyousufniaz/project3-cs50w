@@ -31,6 +31,7 @@ def compose(request):
 
     # Check recipient emails
     data = json.loads(request.body)
+    print(data)
     emails = [email.strip() for email in data.get("recipients").split(",")]
     if emails == [""]:
         return JsonResponse({
@@ -68,6 +69,7 @@ def compose(request):
         for recipient in recipients:
             email.recipients.add(recipient)
         email.save()
+        print(email)
 
     return JsonResponse({"message": "Email sent successfully."}, status=201)
 
@@ -93,6 +95,7 @@ def mailbox(request, mailbox):
 
     # Return emails in reverse chronologial order
     emails = emails.order_by("-timestamp").all()
+    print([email.serialize() for email in emails])
     return JsonResponse([email.serialize() for email in emails], safe=False)
 
 
